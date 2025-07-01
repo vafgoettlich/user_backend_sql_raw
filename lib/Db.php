@@ -73,17 +73,17 @@ class Db
         $username = $this->config->getDbUser();
         $password = $this->config->getDbPassword();
         $dsn = $this->config->getDsn();
+        $options = $this->config->getDbDriverOptions();
 
-        // The PDO constructor does not seem to be able to handle parameters
-        // with `false` values. Therefore, feeding it here manually all options.
-        if ($username and $password) {
-            return new PDO(dsn: $dsn, username: $username, password: $password);
-        } elseif ($username and !$password) {
-            return new PDO(dsn: $dsn, username: $username);
-        } elseif (!$username and $password) {
-            return new PDO(dsn: $dsn, password: $password);
+        // Die PDO-Optionen werden jetzt immer mitgegeben
+        if ($username && $password) {
+            return new PDO(dsn: $dsn, username: $username, password: $password, options: $options);
+        } elseif ($username && !$password) {
+            return new PDO(dsn: $dsn, username: $username, options: $options);
+        } elseif (!$username && $password) {
+            return new PDO(dsn: $dsn, password: $password, options: $options);
         } else {
-            return new PDO($dsn);
+            return new PDO(dsn: $dsn, options: $options);
         }
     }
 }

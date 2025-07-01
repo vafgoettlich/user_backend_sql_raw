@@ -79,6 +79,7 @@ that *User Backend SQL Raw* will connect to.
   * Not more than 100 characters of the first line are read.
   * Whitespace-like characters are [trimmed](https://www.php.net/manual/en/function.trim.php) from
     the beginning and end of the read password.
+* `dbdriveroptions`: Can be used for additional PDO-Options like SSL-Certificates
 
 There are two methods to configure the database connection:
 

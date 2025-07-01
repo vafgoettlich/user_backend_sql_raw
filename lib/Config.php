@@ -47,6 +47,7 @@ class Config
     const CONFIG_KEY_COUNT_USERS = 'count_users';
     const CONFIG_KEY_GET_HOME = 'get_home';
     const CONFIG_KEY_CREATE_USER = 'create_user';
+    const CONFIG_KEY_DB_DRIVER_OPTIONS = 'dbdriveroptions';
 
     /* @var LoggerInterface */
     private $logger;
@@ -236,6 +237,25 @@ class Config
     }
 
 
+
+    /**
+     * Returns an array of PDO driver options if set in the config.
+     * This allows passing custom PDO options (e.g. charset, timeout) to the database connection.
+     * @return array
+     */
+    public function getDbDriverOptions(): array
+    {
+        $options = $this->getConfigValueOrFalse(self::CONFIG_KEY_DB_DRIVER_OPTIONS);
+        if (!is_array($options)) {
+            return [];
+        }
+        // Cast keys to integer in case they are set as strings in the config
+        $pdoOptions = [];
+        foreach ($options as $key => $value) {
+            $pdoOptions[(int)$key] = $value;
+        }
+        return $pdoOptions;
+    }
 
     /**
      * Tries to read a config value and throws an exception if it is not set.
